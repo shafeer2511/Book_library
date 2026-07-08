@@ -12,6 +12,7 @@ const CollectionDetail = () => {
   const [error, setError] = useState(null);
   const [isOwner, setIsOwner] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const googleBooksApiKey = process.env.REACT_APP_GOOGLE_BOOKS_API_KEY;
 
   useEffect(() => {
     const fetchCollectionDetails = async () => {
@@ -37,7 +38,7 @@ const CollectionDetail = () => {
 
         const bookDetails = await Promise.all(
           data.collection.book_ids.map(async (bookId) => {
-            const bookResponse = await fetch(`https://www.googleapis.com/books/v1/volumes/${bookId}`);
+            const bookResponse = await fetch(`https://www.googleapis.com/books/v1/volumes/${bookId}?key=${googleBooksApiKey}`);
             const bookData = await bookResponse.json();
             const bookInfo = bookData.volumeInfo;
 

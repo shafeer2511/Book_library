@@ -16,13 +16,14 @@ const BookDetails = () => {
   const [showNewCollectionForm, setShowNewCollectionForm] = useState(false);
   const [averageRating, setAverageRating] = useState(0);
   const navigate = useNavigate();
+  const googleBooksApiKey = process.env.REACT_APP_GOOGLE_BOOKS_API_KEY;
   
   const { theme } = useTheme(); // Get the current theme from context
 
   useEffect(() => {
     const fetchBookDetails = async () => {
       try {
-        const response = await fetch(`https://www.googleapis.com/books/v1/volumes/${id}`);
+        const response = await fetch(`https://www.googleapis.com/books/v1/volumes/${id}?key=${googleBooksApiKey}`);
         const data = await response.json();
         const bookInfo = data.volumeInfo;
         setBook({
