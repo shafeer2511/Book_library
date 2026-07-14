@@ -22,6 +22,7 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const googleBooksApiKey = process.env.REACT_APP_GOOGLE_BOOKS_API_KEY;
 
+
   const handleLogout = () => {
     localStorage.clear();
     window.open("", "_self");
