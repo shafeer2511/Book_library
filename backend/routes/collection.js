@@ -11,7 +11,7 @@ const router = express.Router();
 const authenticate = (req, res, next) => {
   const token = req.headers.authorization?.split(' ')[1]; // Extract token from Authorization header
   console.log("Auth Middleware: Token received:", token);
-  
+
   if (!token) {
     console.log("Auth Middleware: No token, unauthorized request");
     return res.status(401).json({ message: "Unauthorized" });
@@ -34,7 +34,7 @@ router.post("/", authenticate, async (req, res) => {
   console.log("Create Collection: Request received with data:", req.body);
   try {
     const { collection_name, description, book_ids, visibility } = req.body;
-    console.log("working :"+req.userId)
+    console.log("working :" + req.userId)
     const newCollection = new BookCollection({
       user_id: req.userId,
       collection_name,
@@ -79,25 +79,22 @@ router.get("/", authenticate, async (req, res) => {
 //   }
 // });
 
-// Get a Collection by ID
-// Get a Collection by ID with access control
-// Get a Collection by ID
-// Get a Collection by ID
+
 router.get("/:id", async (req, res) => {
   try {
     const collection = await BookCollection.findById(req.params.id);
     if (!collection) {
       return res.status(404).json({ message: "Collection not found" });
     }
-      const token = req.headers.authorization?.split(' ')[1]; // Extract token from Authorization header
-      
-      console.log("request received inside")
-      try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        req.userId = decoded.userId;
-      } catch (err) {}
-      
-  
+    const token = req.headers.authorization?.split(' ')[1]; // Extract token from Authorization header
+
+    console.log("request received inside")
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      req.userId = decoded.userId;
+    } catch (err) { }
+
+
     // Determine if the user is the owner of the collection
     const isOwner = collection.user_id.toString() === req.userId;
     console.log(isOwner);
