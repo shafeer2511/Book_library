@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './styles/Navbar.css';
 import './styles/SearchBar.css'; // Import search styles
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Navbar = ({ onSearch }) => {
   const [query, setQuery] = useState('');
@@ -25,7 +25,7 @@ const Navbar = ({ onSearch }) => {
       document.body.classList.add('light-theme');
       document.body.classList.remove('dark-theme');
     }
-    
+
     // Save the theme preference to localStorage
     localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
   }, [isDarkMode]);
@@ -37,7 +37,7 @@ const Navbar = ({ onSearch }) => {
   const handleUserLogout = () => {
     localStorage.removeItem('token'); // Remove token on logout
     setIsLoggedIn(false); // Update state immediately in the current tab
-    window.location.href = '/auth'; // Navigate to login page
+    useNavigate("/auth"); // Navigate to login page
   };
 
   const toggleTheme = () => {
@@ -67,9 +67,9 @@ const Navbar = ({ onSearch }) => {
         {isLoggedIn ? (
           <>
             <Link to="/profile" className="nav-link">👤 Profile</Link>
-        <button onClick={toggleTheme} className="theme-toggle-button">
-          {isDarkMode ? '🌙 Dark Mode' : '🌞 Light Mode'}
-        </button>
+            <button onClick={toggleTheme} className="theme-toggle-button">
+              {isDarkMode ? '🌙 Dark Mode' : '🌞 Light Mode'}
+            </button>
             <button onClick={handleUserLogout} className="nav-link logout-button">🔓 Logout</button>
           </>
         ) : (
