@@ -5,7 +5,7 @@ const BookShelf = () => {
   const [books, setBooks] = useState([]);
   const [selectedBook, setSelectedBook] = useState(null);
   const googleBooksApiKey = process.env.REACT_APP_GOOGLE_BOOKS_API_KEY;
-
+  console.log(googleBooksApiKey);
   // Function to fetch books from Google Books API
   const fetchBooks = async () => {
     const response = await fetch(
