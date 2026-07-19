@@ -1,36 +1,60 @@
 .search-bar {
   display: flex;
   align-items: center;
-  padding: 0; /* Remove padding to fit better in the navbar */
+  width: 100%;
+  position: relative;
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  padding: 4px 6px;
+  transition: var(--transition-smooth);
 }
 
-.search-bar input {
-  width: 400px; /* Adjust width for a cleaner look */
-  padding: 9px 20px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 40px; /* Makes the search bar more circular */
-  margin-right: 10px;
+.search-bar:focus-within {
+  border-color: var(--border-focus);
+  background-color: var(--bg-secondary);
+  box-shadow: 0 0 0 3px var(--accent-light);
+}
+
+.search-input {
+  width: 100%;
+  border: none;
+  background: transparent;
+  padding: 8px 12px;
+  font-size: 14px;
+  color: var(--text-primary);
   outline: none;
-  transition: box-shadow 0.3s ease;
 }
 
-.search-bar input:focus {
-  box-shadow: 0 0 5px rgba(50, 152, 219, 0.5); /* Subtle shadow on focus */
+.search-input::placeholder {
+  color: var(--text-muted);
 }
 
-.search-bar button {
-  margin-left: 20px;
-  padding: 8px 15px;
-  background-color: #3498db;
+.search-input:focus {
+  box-shadow: none; /* Override index.css focus ring */
+}
+
+.search-button {
+  background-color: var(--accent-color);
   color: white;
   border: none;
-  border-radius: 20px; /* Match the search bar's rounded corners */
-  cursor: pointer;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  border-radius: var(--border-radius-sm);
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: var(--transition-smooth);
 }
 
-.search-bar button:hover {
-  background-color: #2980b9;
-  box-shadow: 0 0 5px rgba(41, 128, 185, 0.5); /* Add shadow on hover */
+.search-button:hover {
+  background-color: var(--accent-hover);
+}
+
+@media (max-width: 768px) {
+  .search-input {
+    padding: 6px 8px;
+  }
+  .search-button {
+    padding: 6px 12px;
+  }
 }

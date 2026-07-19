@@ -2,47 +2,43 @@ import React, { useState, useEffect } from 'react';
 import './styles/Navbar.css';
 import './styles/SearchBar.css'; // Import search styles
 import { Link, useNavigate } from 'react-router-dom';
-
+import { useTheme } from './ThemeContext';
 const Navbar = ({ onSearch }) => {
   const [query, setQuery] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('token'));
-  const [isDarkMode, setIsDarkMode] = useState(false); // State to manage the theme
+  const { theme, toggleTheme } = useTheme();
+  const navigate = useNavigate();
 
+  // Keep track of token login state changes
   useEffect(() => {
-    // Check for saved theme preference in localStorage
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) {
-      setIsDarkMode(savedTheme === 'dark');
-    }
+    const checkToken = () => {
+      setIsLoggedIn(!!localStorage.getItem('token'));
+    };
+    window.addEventListener('storage', checkToken);
+    // Simple interval check to handle same-tab navigation state changes
+    const interval = setInterval(checkToken, 1000);
+    return () => {
+      window.removeEventListener('storage', checkToken);
+      clearInterval(interval);
+    };
   }, []);
-
-  useEffect(() => {
-    // Update the body class based on the current theme
-    if (isDarkMode) {
-      document.body.classList.add('dark-theme');
-      document.body.classList.remove('light-theme');
-    } else {
-      document.body.classList.add('light-theme');
-      document.body.classList.remove('dark-theme');
-    }
-
-    // Save the theme preference to localStorage
-    localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
-  }, [isDarkMode]);
 
   const handleSearch = () => {
     onSearch(query);
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
+  };
+
   const handleUserLogout = () => {
     localStorage.removeItem('token'); // Remove token on logout
     setIsLoggedIn(false); // Update state immediately in the current tab
-    useNavigate("/auth"); // Navigate to login page
+    navigate("/auth"); // Navigate to login page
   };
 
-  const toggleTheme = () => {
-    setIsDarkMode(prevMode => !prevMode); // Toggle between dark and light mode
-  };
 
   return (
     <nav className="navbar">
@@ -53,13 +49,14 @@ const Navbar = ({ onSearch }) => {
         <div className="search-bar">
           <input
             type="text"
-            placeholder="Search for books"
+            placeholder="Search by title, author, or genre..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
+            onKeyDown={handleKeyDown}
             className="search-input" // Updated for styling consistency
           />
           <button onClick={handleSearch} className="search-button">
-            Search
+            🔍 Search
           </button>
         </div>
       </div>
@@ -67,13 +64,18 @@ const Navbar = ({ onSearch }) => {
         {isLoggedIn ? (
           <>
             <Link to="/profile" className="nav-link">👤 Profile</Link>
-            <button onClick={toggleTheme} className="theme-toggle-button">
-              {isDarkMode ? '🌙 Dark Mode' : '🌞 Light Mode'}
+            <button onClick={toggleTheme} className="theme-toggle-button" aria-label="Toggle Theme">
+              {theme === "dark" ? "🌙 Dark Mode" : "🌞 Light Mode"}
             </button>
             <button onClick={handleUserLogout} className="nav-link logout-button">🔓 Logout</button>
           </>
         ) : (
-          <Link to="/auth" className="nav-link">🔒 Login</Link>
+          <>
+            <button onClick={toggleTheme} className="theme-toggle-button" aria-label="Toggle Theme">
+              {theme === "dark" ? "🌙 Dark Mode" : "🌞 Light Mode"}
+            </button>
+            <Link to="/auth" className="nav-link login-link">🔒 Login</Link>
+          </>
         )}
       </div>
     </nav>

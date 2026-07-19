@@ -36,24 +36,61 @@ const Profile = () => {
 
   return (
     <ProfileProvider>
-      <div className="profile-container">
-        <div className="sidebar">
-          <button onClick={() => setActiveSection('profile')}>Profile</button>
-          <button onClick={() => setActiveSection('stats')}>Reading Stats & Goals</button>
-          <button onClick={() => setActiveSection('reviews')}>Reviews & Favorites</button>
-          <button onClick={() => setActiveSection('collections')}>Collections</button>
-          <button onClick={() => setActiveSection('settings')}>Personalized Settings</button>
-          <button onClick={() => setActiveSection('actions')}>Account Actions</button>
-        </div>
+      <div className="profile-wrapper">
+        <div className="profile-container">
+          <aside className="profile-sidebar">
+            <div className="sidebar-header">
+              <span className="sidebar-title">My Account</span>
+            </div>
+            <nav className="sidebar-nav">
+              <button 
+                onClick={() => setActiveSection('profile')}
+                className={activeSection === 'profile' ? 'active' : ''}
+              >
+                👤 Profile Info
+              </button>
+              <button 
+                onClick={() => setActiveSection('stats')}
+                className={activeSection === 'stats' ? 'active' : ''}
+              >
+                📊 Reading Stats
+              </button>
+              <button 
+                onClick={() => setActiveSection('reviews')}
+                className={activeSection === 'reviews' ? 'active' : ''}
+              >
+                ✍️ Reviews & Favorites
+              </button>
+              <button 
+                onClick={() => setActiveSection('collections')}
+                className={activeSection === 'collections' ? 'active' : ''}
+              >
+                📁 My Collections
+              </button>
+              <button 
+                onClick={() => setActiveSection('settings')}
+                className={activeSection === 'settings' ? 'active' : ''}
+              >
+                ⚙️ Settings
+              </button>
+              <button 
+                onClick={() => setActiveSection('actions')}
+                className={activeSection === 'actions' ? 'active' : ''}
+              >
+                🛡️ Account Actions
+              </button>
+            </nav>
+          </aside>
 
-        <div className="main-content">
-          {renderContent()}
-        </div>
+          <main className="profile-main-content">
+            {renderContent()}
+          </main>
 
-        {/* Render Modals */}
-        <EditProfileModal />
-        <PasswordModal />
-        <DeleteAccountModal />
+          {/* Render Modals */}
+          <EditProfileModal />
+          <PasswordModal />
+          <DeleteAccountModal />
+        </div>
       </div>
     </ProfileProvider>
   );

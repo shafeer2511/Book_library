@@ -1,29 +1,167 @@
-// // controllers/userController.js
-// const bcrypt = require('bcryptjs');
-// const User = require('../models/User'); // Adjust path based on your project structure
+const User = require("../models/User");
+const BookCollection=require("../models/BookCollection");
+const Review = require("../models/Review");
+const bcrypt = require("bcrypt");
 
-// // Function to handle password update
-// const updateUserPassword = async (req, res) => {
-//   const { currentPassword, newPassword } = req.body;
+// GET PROFILE
+const getProfile = async (req, res) => {
+    try {
 
-//   try {
-//     const user = await User.findById(req.user.id); // Assuming `req.user` holds the authenticated user's info
+        const user = await User.findById(req.user.id).select("-password");
 
-//     // Check if current password is correct
-//     const isMatch = await bcrypt.compare(currentPassword, user.password);
-//     if (!isMatch) {
-//       return res.status(400).json({ message: 'Current password is incorrect' });
-//     }
+        if (!user) {
+            return res.status(404).json({
+                message: "User not found"
+            });
+        }
 
-//     // Hash the new password and update it
-//     const salt = await bcrypt.genSalt(10);
-//     user.password = await bcrypt.hash(newPassword, salt);
-//     await user.save();
+        res.json(user);
 
-//     res.status(200).json({ message: 'Password updated successfully' });
-//   } catch (error) {
-//     res.status(500).json({ message: 'Server error' });
-//   }
-// };
+    } catch (error) {
 
-// module.exports = { updateUserPassword };
+        res.status(500).json({
+            message: "Server error"
+        });
+
+    }
+};
+
+// UPDATE PROFILE
+const updateProfile = async (req, res) => {
+
+    try {
+
+        const { user_name, email, genres } = req.body;
+
+        const user = await User.findById(req.user.id);
+
+        if (!user) {
+            return res.status(404).json({
+                message: "User not found"
+            });
+        }
+
+        user.user_name = user_name || user.user_name;
+        user.email = email || user.email;
+        user.genres = genres || user.genres;
+
+        await user.save();
+
+        res.json({
+            message: "Profile updated successfully",
+            user
+        });
+
+    } catch (error) {
+
+        console.error(error);
+
+        res.status(500).json({
+            message: "Error updating profile",
+            error
+        });
+
+    }
+
+};
+
+// CHANGE PASSWORD
+const changePassword = async (req, res) => {
+
+    try {
+
+        const { currentPassword, newPassword } = req.body;
+
+        const user = await User.findById(req.user.id);
+
+        if (!user) {
+            return res.status(404).json({
+                message: "User not found"
+            });
+        }
+
+        const isMatch = await bcrypt.compare(
+            currentPassword,
+            user.password
+        );
+
+        if (!isMatch) {
+
+            return res.status(400).json({
+                message: "Incorrect current password"
+            });
+
+        }
+
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+        user.password = hashedPassword;
+
+        await user.save();
+
+        res.json({
+            message: "Password updated successfully"
+        });
+
+    } catch (error) {
+
+        console.error(error);
+
+        res.status(500).json({
+            message: "Server error"
+        });
+
+    }
+
+};
+
+// DELETE ACCOUNT
+const deleteProfile = async (req, res) => {
+
+    try {
+
+        const userId = req.user.id;
+
+        const user = await User.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({
+                message: "User not found"
+            });
+        }
+
+        // Delete all collections created by the user
+        await BookCollection.deleteMany({
+            user_id: userId
+        });
+
+        // Delete all reviews written by the user
+        await Review.deleteMany({
+            user: userId
+        });
+
+        // Delete the user account
+        await User.findByIdAndDelete(userId);
+
+        res.json({
+            message: "Account and related data deleted successfully"
+        });
+
+    } catch (error) {
+
+        console.error(error);
+
+        res.status(500).json({
+            message: "Error deleting account"
+        });
+
+    }
+
+};
+
+module.exports = {
+    getProfile,
+    updateProfile,
+    changePassword,
+    deleteProfile
+};

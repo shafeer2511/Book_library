@@ -57,18 +57,22 @@ function LoginSignup({ setIsLoggedIn }) {
       });
 
       const data = await response.json();
+      console.log("login data", data)
       if (!response.ok) {
         throw new Error(data.message || "Login failed");
       }
 
+      console.log("Token: ",data.token);
       // Store the token in localStorage
       localStorage.setItem("token", data.token);
+
+      console.log("Stored: ",localStorage.getItem("token"));
       setSuccessMessage("Logged in successfully!");
       setIsLoggedIn(true);
       setErrorMessage("");
 
       // Navigate to the home or profile page
-      navigate(-1); // Adjust this path as neede
+      navigate(-1); // Adjust this path as needed
 
     } catch (error) {
       setErrorMessage(error.message || "An error occurred during login.");
@@ -76,82 +80,95 @@ function LoginSignup({ setIsLoggedIn }) {
   };
 
   return (
-    <div className={`loginSignupContainer ${isSignUpMode ? "sign-up-mode" : ""}`}>
-      {/* Login Form Section */}
-      <div className="form-container sign-in-container">
-        <h1>Login</h1>
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={formData.email}
-          onChange={handleInputChange}
-          required
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={formData.password}
-          onChange={handleInputChange}
-          required
-        />
-        <button onClick={handleLogin}>Login</button>
-        {errorMessage && <p className="error">{errorMessage}</p>}
-        {successMessage && <p className="success">{successMessage}</p>}
-      </div>
+    <div className="auth-page-wrapper">
+      <div className={`loginSignupContainer ${isSignUpMode ? "sign-up-mode" : ""}`}>
+        {/* Login Form Section */}
+        <div className="form-container sign-in-container">
+          <h2>Login</h2>
+          <p className="form-helper">Welcome back! Access your library.</p>
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={formData.email}
+            onChange={handleInputChange}
+            required
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={formData.password}
+            onChange={handleInputChange}
+            required
+          />
+          <button onClick={handleLogin} className="auth-btn">Login</button>
+          <p className="mobile-toggle-link" onClick={toggleMode}>
+            Don't have an account? <span>Sign Up</span>
+          </p>
+          {errorMessage && <p className="auth-message error">{errorMessage}</p>}
+          {successMessage && <p className="auth-message success">{successMessage}</p>}
+        </div>
 
-      {/* Signup Form Section */}
-      <div className="form-container sign-up-container">
-        <h1>Create Account</h1>
-        <input
-          type="text"
-          name="user_name"
-          placeholder="Name"
-          value={formData.user_name}
-          onChange={handleInputChange}
-          required
-        />
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={formData.email}
-          onChange={handleInputChange}
-          required
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={formData.password}
-          onChange={handleInputChange}
-          required
-        />
-        <input
-          type="text"
-          name="genres"
-          placeholder="Favorite Genres (comma-separated)"
-          value={formData.genres}
-          onChange={handleInputChange}
-        />
-        <button onClick={handleSignup}>Create Account</button>
-        {errorMessage && <p className="error">{errorMessage}</p>}
-        {successMessage && <p className="success">{successMessage}</p>}
-      </div>
+        {/* Signup Form Section */}
+        <div className="form-container sign-up-container">
+          <h2>Create Account</h2>
+          <p className="form-helper">Join us to start compiling your BookNest.</p>
+          
+          <input
+            type="text"
+            name="user_name"
+            placeholder="Name"
+            value={formData.user_name}
+            onChange={handleInputChange}
+            required
+          />
 
-      {/* Overlay Section */}
-      <div className="overlay-container">
-        <div className="overlay">
-          <div className="overlay-panel overlay-left">
-            <h1>Welcome Back!</h1>
-            <p>To keep connected with us please login with your personal info</p>
-            <button onClick={toggleMode} className="ghost">Sign In</button>
-          </div>
-          <div className="overlay-panel overlay-right">
-            <h1>Hello, Friend!</h1>
-            <p>Enter your details and start your journey with us</p>
-            <button onClick={toggleMode} className="ghost">Sign Up</button>
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={formData.email}
+            onChange={handleInputChange}
+            required
+          />
+
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={formData.password}
+            onChange={handleInputChange}
+            required
+          />
+          <input
+            type="text"
+            name="genres"
+            placeholder="Favorite Genres (comma-separated)"
+            value={formData.genres}
+            onChange={handleInputChange}
+          />
+          <button onClick={handleSignup} className="auth-btn">Create Account</button>
+          <p className="mobile-toggle-link" onClick={toggleMode}>
+            Already have an account? <span>Login</span>
+          </p>
+          {errorMessage && <p className="auth-message error">{errorMessage}</p>}
+          {successMessage && <p className="auth-message success">{successMessage}</p>}
+        </div>
+
+        {/* Overlay Section */}
+        <div className="overlay-container">
+          <div className="overlay">
+            <div className="overlay-panel overlay-left">
+              <h2>Welcome Back!</h2>
+              <p>Keep tracking your reading progress and managing your collections.</p>
+              <button onClick={toggleMode} className="ghost-btn">Sign In</button>
+            </div>
+            <div className="overlay-panel overlay-right">
+              <h2>Hello, Reader!</h2>
+              <p>Sign up to start organizing your personal library list today.</p>
+              <button onClick={toggleMode} className="ghost-btn">Sign Up</button>
+            </div>
           </div>
         </div>
       </div>

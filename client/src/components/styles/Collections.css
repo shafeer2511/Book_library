@@ -1,62 +1,195 @@
 .collections-container {
-  padding-top: 0px; /* Adjust this value to control the spacing from the navbar */
-  padding-left: 20px;
-  padding-right: 20px;
+  padding: 48px 40px;
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 72px auto 0;
+  min-height: calc(100vh - 72px);
+  box-sizing: border-box;
 }
 
-.collections-container h2 {
-  text-align: center;
-  margin-bottom: 20px;
-  font-size: 24px;
+.collections-header {
+  text-align: left;
+  margin-bottom: 36px;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 20px;
+}
+
+.collections-header h2 {
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  margin: 0 0 6px 0;
+}
+
+.collections-subtitle {
+  font-size: 0.95rem;
+  color: var(--text-muted);
 }
 
 .collection-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2rem;
-  justify-content: center; /* Centers the cards horizontally */
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
 }
 
 .collection-card {
-  width: 200px;
-  padding: 100px; /* Adjust padding to control card size */
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background-color: #f9f9f9;
-  transition: box-shadow 0.3s;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-lg);
+  padding: 24px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
+  align-items: flex-start;
+  text-align: left;
+  box-shadow: var(--card-shadow);
+  transition: var(--transition-smooth);
+  position: relative;
 }
 
 .collection-card:hover {
-  box-shadow: 9px 8px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-4px);
+  box-shadow: var(--hover-shadow);
+  border-color: var(--text-muted);
 }
 
-.collection-card h3 {
-  font-size: 38px;
+.collection-card-top {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.visibility-badge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 40px;
+  text-transform: uppercase;
+}
+
+.visibility-badge.public {
+  background-color: var(--success-light);
+  color: var(--success-color);
+}
+
+.visibility-badge.private {
+  background-color: var(--bg-tertiary);
+  color: var(--text-secondary);
+}
+
+.book-count-badge {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.collection-name {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
   margin-bottom: 8px;
+  line-height: 1.3;
+}
+
+.collection-desc {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-bottom: 24px;
+  flex-grow: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-height: 4.5em;
+}
+
+.collection-actions {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  margin-top: auto;
 }
 
 .view-books-button {
-  padding: 8px 12px;
-  color: #fff;
-  background-color: #4a90e2;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-  margin-top: 10px;
+  flex: 2;
+  padding: 10px;
+  color: white;
+  background-color: var(--accent-color);
+  border-radius: var(--border-radius-md);
+  font-size: 13px;
+  text-align: center;
+  font-weight: 700;
 }
-.delete-collection-button{
-  background-color: red;
-  margin-top: 20px;
-  border-radius: 6px;
-  padding: 8px 12px;
-}
+
 .view-books-button:hover {
-  background-color: #357abd;
+  background-color: var(--accent-hover);
+}
+
+.delete-collection-button {
+  flex: 1;
+  padding: 10px;
+  color: var(--error-color);
+  background-color: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.delete-collection-button:hover {
+  background-color: rgba(225, 29, 72, 0.08);
+  border-color: var(--error-color);
+}
+
+/* Empty State */
+.collections-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 24px;
+  text-align: center;
+  background-color: var(--bg-secondary);
+  border-radius: var(--border-radius-lg);
+  border: 1px dashed var(--border-color);
+  margin: 40px auto;
+  max-width: 500px;
+}
+
+.empty-emoji {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.collections-empty-state h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--text-primary);
+}
+
+.collections-empty-state p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  max-width: 320px;
+}
+
+.collections-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  font-size: 16px;
+  color: var(--text-muted);
+}
+
+@media (max-width: 768px) {
+  .collections-container {
+    padding: 32px 16px;
+  }
+  
+  .collection-list {
+    grid-template-columns: 1fr;
+  }
 }

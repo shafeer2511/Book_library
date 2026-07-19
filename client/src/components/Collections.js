@@ -62,35 +62,53 @@ const Collections = () => {
     setCollectionToDelete(null);
   };
 
-  if (loading) return <p>Loading collections...</p>;
+  if (loading) return <div className="collections-loading"><p>Loading collections...</p></div>;
 
   return (
     <div className="collections-container">
-      <h2>Your Collections</h2>
+      <div className="collections-header">
+        <h2>Your Collections</h2>
+        <p className="collections-subtitle">Organize and manage your personal library lists</p>
+      </div>
+
       {collections.length > 0 ? (
         <div className="collection-list">
           {collections.map((collection) => (
             <div key={collection._id} className="collection-card">
-              <h3>{collection.collection_name}</h3>
-              <p>{collection.description}</p>
-              <p><strong>Visibility:</strong> {collection.visibility}</p>
-              <button
-                onClick={() => navigate(`/collections/${collection._id}`)}
-                className="view-books-button"
-              >
-                View Books
-              </button>
-              <button
-                onClick={() => showConfirmationModal(collection._id)}
-                className="delete-collection-button"
-              >
-                Delete Collection
-              </button>
+              <div className="collection-card-top">
+                <span className={`visibility-badge ${collection.visibility}`}>
+                  {collection.visibility === 'private' ? '🔒 Private' : '🌐 Public'}
+                </span>
+                <span className="book-count-badge">
+                  📚 {collection.book_ids ? collection.book_ids.length : 0} Books
+                </span>
+              </div>
+              <h3 className="collection-name">{collection.collection_name}</h3>
+              <p className="collection-desc">{collection.description || 'No description provided.'}</p>
+
+              <div className="collection-actions">
+                <button
+                  onClick={() => navigate(`/collections/${collection._id}`)}
+                  className="view-books-button"
+                >
+                  View Books
+                </button>
+                <button
+                  onClick={() => showConfirmationModal(collection._id)}
+                  className="delete-collection-button"
+                >
+                  Delete
+                </button>
+              </div>
             </div>
           ))}
         </div>
       ) : (
-        <p>No collections found. Create a new one!</p>
+        <div className="collections-empty-state">
+          <span className="empty-emoji">📁</span>
+          <h3>No collections found</h3>
+          <p>Create your first book collection to start organizing your library!</p>
+        </div>
       )}
 
       {/* Confirmation Modal */}

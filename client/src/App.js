@@ -60,6 +60,33 @@ function App() {
     fetchBooks();
   }, []);
 
+  useEffect(() => {
+    const verifyUser = async () => {
+      const token = localStorage.getItem("token");
+
+      if (!token) return;
+
+      try {
+        const response = await fetch(
+          "http://localhost:5000/api/users/profile",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (!response.ok) {
+          localStorage.removeItem("token");
+        }
+      } catch (err) {
+        localStorage.removeItem("token");
+      }
+    };
+
+    verifyUser();
+  }, []);
+
   return (
     <Router>
       <div className={`App ${theme}`}>

@@ -1,30 +1,139 @@
-.pagination-container {
-    margin-top: 60px; /* Space between the pagination and other content */
-    margin-bottom: 2rem; /* Extra space below the pagination */
-    display: flex;
-    justify-content: center;
-    /* justify-content: space-around; */
+.homeContainer {
+  margin-top: 72px; /* Clear fixed navbar */
+  min-height: calc(100vh - 72px);
+  background-color: var(--bg-primary);
+  display: flex;
+  flex-direction: column;
+}
+
+.carouselSection, 
+.shelfSection, 
+.exploreSection {
+  padding: 48px 40px;
+  max-width: 1300px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.carouselSection {
+  background-color: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.shelfSection {
+  border-bottom: 1px solid var(--border-color);
+}
+
+.sectionHeader {
+  margin-bottom: 32px;
+  text-align: left;
+}
+
+.sectionTitle {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.5px;
+  margin-bottom: 6px;
+}
+
+.sectionSubtitle {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+
+/* Empty State */
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 24px;
+  text-align: center;
+  background-color: var(--bg-secondary);
+  border-radius: var(--border-radius-lg);
+  border: 1px dashed var(--border-color);
+  margin: 20px auto;
+  max-width: 500px;
+}
+
+.emptyIcon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.emptyState h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--text-primary);
+}
+
+.emptyState p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  max-width: 320px;
+}
+
+/* Pagination Control */
+.paginationContainer {
+  margin-top: 48px;
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: center;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background-color: var(--bg-secondary);
+  padding: 8px 16px;
+  border-radius: var(--border-radius-lg);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--card-shadow);
+}
+
+.pageButton {
+  padding: 8px 16px;
+  background-color: var(--bg-tertiary);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.pageButton:hover:not(:disabled) {
+  background-color: var(--accent-color);
+  color: white;
+  border-color: var(--accent-color);
+  box-shadow: 0 4px 10px rgba(99, 102, 241, 0.2);
+}
+
+.pageButton:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.pageNumber {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+  min-width: 60px;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .carouselSection, 
+  .shelfSection, 
+  .exploreSection {
+    padding: 32px 16px;
   }
   
-  .pagination button {
-    padding: 8px 16px;
-    margin: 0 5px;
-    background-color: blueviolet;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.3s;
+  .sectionTitle {
+    font-size: 1.4rem;
   }
-  
-  .pagination button:hover {
-    background-color: #16a085;
-  }
-  
-  .pagination span {
-    font-size: 14px;
-    color: #555;
-    margin: 0 10px;
-  }
-  
+}

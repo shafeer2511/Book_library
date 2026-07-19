@@ -1,23 +1,31 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+/* Global main layout modifications */
 .book-cards-container {
-  display: flex;
-  flex-wrap: wrap; /* Allows cards to wrap onto multiple rows */
-  justify-content: center; /* Centers the cards */
-  gap: 20px; /* Space between cards */
-  padding: 20px;
-}
-
-.book-card img {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 30px;
+  padding: 24px;
+  max-width: 1300px;
+  margin: 0 auto;
   width: 100%;
-  height: 200px;
-  object-fit: cover;
-  border-radius: 5px;
 }
 
-body {
-  font-family: 'Montserrat', sans-serif;
+.book-count {
+  max-width: 1300px;
+  margin: 20px auto 10px;
+  padding: 0 24px;
+  text-align: left;
 }
 
-h1, h2, h3, .book-title {
-  font-family: 'Montserrat', sans-serif;
+.book-count h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 640px) {
+  .book-cards-container {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 16px;
+    padding: 16px;
+  }
 }

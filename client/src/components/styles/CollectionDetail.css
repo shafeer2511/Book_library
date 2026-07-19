@@ -1,161 +1,273 @@
-/* Container for the collection detail page */
 .collection-detail-page {
-  min-width: 1000px;
-  margin: 0 auto;
-  font-family: Arial, sans-serif;
-  color: #333;
-  margin-top: 5%;
-  /* padding: 20px; */
+  margin-top: 72px;
+  padding: 48px 40px;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  min-height: calc(100vh - 72px);
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
+  display: flex;
+  flex-direction: column;
   box-sizing: border-box;
 }
 
-/* Header styling */
-.collection-detail-page h2 {
-  font-size: 32px;
-  margin-bottom: 15px;
-  color: #2c3e50;
+.collection-detail-container {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  width: 100%;
+}
+
+.collection-detail-header {
   text-align: center;
-  font-weight: bold;
-}
-
-/* Button styling */
-.collection-detail-page button {
-  display: inline-block;
-  padding: 10px 20px;
-  margin: 15px 0;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.collection-detail-page button:hover {
-  background-color: #2980b9;
-}
-
-/* Delete button styling */
-.delete-collection-btn {
-  background-color: #e74c3c;
-  margin-top: 30px;
-}
-
-.delete-collection-btn:hover {
-  background-color: #c0392b;
-}
-
-/* Error message styling */
-.error-message {
-  color: #e74c3c;
-  font-weight: bold;
-  text-align: center;
-  font-size: 18px;
-}
-
-/* Books list container using grid for a responsive layout */
-.books-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 30px;
-  margin-top: 30px;
-  padding: 0 20px;
-  box-sizing: border-box;
-}
-
-/* Book card container with white background */
-.book-cards {
-  background-color: white;
-  background-position: center;
-  background-size: cover;
-  border-radius: 8px;
-  padding: 16px;
-  text-align: center;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  
-  box-sizing: border-box;
-  transition: transform 0.3s ease-in-out;
-  cursor: pointer;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-lg);
+  padding: 36px;
+  box-shadow: var(--card-shadow);
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 12px;
 }
 
-.book-cards:hover {
-  transform: scale(1.05) rotateX(10deg) rotateY(10deg);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-}
-/* Book cover image */
-.book-cards img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 8px;
-  object-fit: cover;
-  margin-bottom: 15px;
-  transition: transform 0.3s ease-in-out;
+.collection-meta-top {
+  margin-bottom: 4px;
 }
 
-.book-cards:hover img {
-  transform: scale(1.1);
+.collection-detail-badge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  background-color: var(--bg-tertiary);
+  color: var(--text-secondary);
+  border-radius: 40px;
+  text-transform: uppercase;
 }
 
-/* Book title styling */
-.book-title {
-  font-size: 20px;
-  font-weight: bold;
-  color: #2c3e50;
-  margin: 10px 0;
-  white-space: normal;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-height: 4.8em;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+.collection-detail-page h2 {
+  font-size: 2.25rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: var(--text-primary);
+  margin: 0;
 }
 
-/* Book author styling */
-.book-author {
-  font-size: 16px;
-  color: #777;
-  margin: 5px 0;
+.collection-detail-desc {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  max-width: 600px;
+  line-height: 1.6;
 }
 
-/* Remove book button styling */
-.remove-book-btn {
-  background-color: #f39c12;
-  margin-top: 15px;
-  padding: 8px 16px;
-  border: none;
+.collection-detail-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.copy-url-btn,
+.delete-collection-btn {
+  padding: 10px 20px;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: var(--border-radius-md);
+  transition: var(--transition-smooth);
+}
+
+.copy-url-btn {
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+.copy-url-btn:hover {
+  background-color: var(--bg-tertiary);
+  border-color: var(--text-muted);
+}
+
+.delete-collection-btn {
+  background-color: var(--error-color);
   color: white;
-  border-radius: 6px;
+  box-shadow: 0 4px 10px rgba(225, 29, 72, 0.2);
+}
+
+.delete-collection-btn:hover {
+  background-color: var(--error-hover);
+  transform: translateY(-2px);
+}
+
+/* Books list grid */
+.books-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 24px;
+  margin-top: 24px;
+  width: 100%;
+}
+
+.collection-book-card {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  box-shadow: var(--card-shadow);
+  transition: var(--transition-smooth);
+  height: 100%;
+}
+
+.collection-book-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--hover-shadow);
+  border-color: var(--text-muted);
+}
+
+.collection-book-cover-wrapper {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+  border-radius: var(--border-radius-sm);
+  background-color: var(--bg-tertiary);
+}
+
+.collection-book-cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.collection-book-card:hover .collection-book-cover {
+  transform: scale(1.03);
+}
+
+.remove-book-btn {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  background-color: var(--error-color);
+  color: white;
+  border-radius: var(--border-radius-sm);
+  padding: 6px 12px;
+  font-size: 11px;
+  font-weight: 700;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: var(--transition-smooth);
+  z-index: 10;
 }
 
 .remove-book-btn:hover {
-  background-color: #e67e22;
+  background-color: var(--error-hover);
+  transform: scale(1.05);
 }
 
-/* Responsive adjustments */
+.collection-book-info {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: left;
+}
+
+.collection-book-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.4;
+  height: 2.8em;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.collection-book-author {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Empty Books state */
+.collection-empty-books {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 64px 24px;
+  background-color: var(--bg-secondary);
+  border-radius: var(--border-radius-lg);
+  border: 1px dashed var(--border-color);
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.empty-book-emoji {
+  font-size: 40px;
+  margin-bottom: 12px;
+}
+
+.collection-empty-books h4 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: var(--text-primary);
+}
+
+.collection-empty-books p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  max-width: 320px;
+}
+
+.collection-error-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-lg);
+  padding: 40px;
+}
+
+.error-message {
+  color: var(--error-color);
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.collection-books-loading {
+  text-align: center;
+  padding: 48px;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
 @media (max-width: 768px) {
   .collection-detail-page {
-    padding: 15px;
+    padding: 32px 16px;
   }
-
+  
+  .collection-detail-header {
+    padding: 24px;
+  }
+  
+  .collection-detail-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+  
   .books-list {
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* Adjust to show 2-3 books per row */
-  }
-
-  .book-cards {
-    padding: 15px;
-  }
-
-  .book-title {
-    font-size: 18px;
-  }
-
-  .book-author {
-    font-size: 14px;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 16px;
   }
 }

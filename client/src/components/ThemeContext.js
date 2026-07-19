@@ -7,24 +7,32 @@ const ThemeContext = createContext();
 export const useTheme = () => useContext(ThemeContext);
 
 export const ThemeProvider = ({ children }) => {
-  const [theme, setTheme] = useState(lightTheme);
+ const [theme, setTheme] = useState("light");
 
   // Check for saved theme in localStorage
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) {
-      setTheme(savedTheme === 'dark' ? darkTheme : lightTheme);
-    }
-  }, []);
+ useEffect(() => {
+  const savedTheme = localStorage.getItem("theme");
+  if (savedTheme) {
+    setTheme(savedTheme);
+  }
+}, []);
 
-  const toggleTheme = () => {
-    const newTheme = theme === lightTheme ? darkTheme : lightTheme;
-    setTheme(newTheme);
-    localStorage.setItem('theme', newTheme === darkTheme ? 'dark' : 'light');
-  };
+const toggleTheme = () => {
+  const newTheme = theme === "light" ? "dark" : "light";
+  setTheme(newTheme);
+  localStorage.setItem("theme", newTheme);
+};
+
+useEffect(() => {
+  document.body.classList.toggle("dark-theme", theme === "dark");
+  document.body.classList.toggle("light-theme", theme === "light");
+}, [theme]);
+
+
+const themeObject = theme === "dark" ? darkTheme : lightTheme;
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider value={{ theme, themeObject, toggleTheme }}>
       {children}
     </ThemeContext.Provider>
   );

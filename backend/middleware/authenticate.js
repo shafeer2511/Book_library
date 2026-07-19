@@ -9,6 +9,7 @@ const authenticate = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    // console.log(decoded);
     req.user = { id: decoded.userId }; // Attach user ID from token to req
     next();
   } catch (error) {

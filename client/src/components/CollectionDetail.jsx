@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import './styles/CollectionDetail.css';
 import ConfirmationModal from './ConfirmationModal'; // Assuming this is the modal component
 import Footer from './Footer';
+
 const CollectionDetail = () => {
   const { collectionId } = useParams();
   const navigate = useNavigate();
@@ -89,26 +90,48 @@ const CollectionDetail = () => {
     }
   };
 
-  const handleRemoveBook = async (bookId) => {
-    try {
-      const token = localStorage.getItem("token");
-      const response = await fetch(`http://localhost:5000/api/collections/${collectionId}/book/${bookId}`, {
+ const handleRemoveBook = async (bookId) => {
+  const confirmDelete = window.confirm(
+    "Are you sure you want to remove this book from the collection?"
+  );
+
+  if (!confirmDelete) {
+    return;
+  }
+
+  try {
+    const token = localStorage.getItem("token");
+
+    const response = await fetch(
+      `http://localhost:5000/api/collections/${collectionId}/book/${bookId}`,
+      {
         method: "DELETE",
         headers: {
-          "Authorization": `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
-      });
-
-      if (response.ok) {
-        alert("Book removed from collection!");
-        setBooks(books.filter((book) => book.id !== bookId));
-      } else {
-        alert("Failed to remove the book from the collection.");
       }
-    } catch (error) {
-      console.error("Error removing book from collection:", error);
-      alert("An error occurred while trying to remove the book.");
+    );
+
+    if (response.ok) {
+      alert("Book removed from collection!");
+      setBooks((prevBooks) =>
+        prevBooks.filter((book) => book.id !== bookId)
+      );
+    } else {
+      const data = await response.json();
+      alert(data.message || "Failed to remove the book from the collection.");
     }
+  } catch (error) {
+    console.error("Error removing book from collection:", error);
+    alert("An error occurred while trying to remove the book.");
+  }
+};
+
+
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(window.location.href);
+    alert("Collection URL copied to clipboard!");
+    navigate(`/collections/${collectionId}`);
   };
 
   const showConfirmationModal = () => setShowModal(true);
@@ -117,45 +140,80 @@ const CollectionDetail = () => {
   return (
     <div className="collection-detail-page">
       {error ? (
-        <p className="error-message">{error}</p>
+        <div className="collection-error-container">
+          <p className="error-message">🔒 {error}</p>
+        </div>
       ) : (
-        <>
-          <h2>{collection?.collection_name}</h2>
-          <button onClick={() => navigate(`/collections/${collectionId}`)}>Copy Collection URL</button>
-          <p>{collection?.description}</p>
-
-          {isOwner && (
-            <button onClick={showConfirmationModal} className="delete-collection-btn">
-              Delete Collection
-            </button>
-          )}
+        <div className="collection-detail-container">
+          <div className="collection-detail-header">
+            <div className="collection-meta-top">
+              <span className="collection-detail-badge">
+                {collection?.visibility === 'private' ? '🔒 Private List' : '🌐 Public List'}
+              </span>
+            </div>
+            <h2>{collection?.collection_name}</h2>
+            <p className="collection-detail-desc">{collection?.description || 'No description provided.'}</p>
+            
+            <div className="collection-detail-actions">
+              <button onClick={handleCopyLink} className="copy-url-btn">
+                🔗 Copy URL Link
+              </button>
+              {isOwner && (
+                <button onClick={showConfirmationModal} className="delete-collection-btn">
+                  🗑️ Delete Collection
+                </button>
+              )}
+            </div>
+          </div>
 
           {loading ? (
-            <p>Loading books...</p>
+            <div className="collection-books-loading">
+              <p>Loading books in collection...</p>
+            </div>
           ) : (
-            
-            <div className="books-list">
+            <div className="collection-books-wrapper">
+              <h3 className="section-title">Books in this list ({books.length})</h3>
+              
               {books.length > 0 ? (
-                books.map((book) => (
-                  <div key={book.id} className="book-card" onClick={() => navigate(`/book/${book.id}`, { state: { book } })}>
-                    <img src={book.cover} alt={book.title} className="book-cover" />
-                    <div className="book-info">
-                      <div className="book-title">{book.title}</div>
-                      <div className="book-author">Author: {book.author}</div>
+                <div className="books-list">
+                  {books.map((book) => (
+                    <div 
+                      key={book.id} 
+                      className="collection-book-card" 
+                      onClick={() => navigate(`/book/${book.id}`, { state: { book } })}
+                    >
+                      <div className="collection-book-cover-wrapper">
+                        <img src={book.cover} alt={book.title} className="collection-book-cover" />
+                        {isOwner && (
+                          <button 
+                            onClick={(e) => { 
+                              e.stopPropagation(); 
+                              handleRemoveBook(book.id); 
+                            }} 
+                            className="remove-book-btn"
+                            title="Remove from list"
+                          >
+                            ✕ Remove
+                          </button>
+                        )}
+                      </div>
+                      <div className="collection-book-info">
+                        <div className="collection-book-title" title={book.title}>{book.title}</div>
+                        <div className="collection-book-author">{book.author}</div>
+                      </div>
                     </div>
-                    {isOwner && (
-                      <button onClick={(e) => { e.stopPropagation(); handleRemoveBook(book.id); }} className="remove-book-btn">
-                        Remove from Collection
-                      </button>
-                    )}
-                  </div>
-                ))
+                  ))}
+                </div>
               ) : (
-                <p>No books in this collection.</p>
+                <div className="collection-empty-books">
+                  <span className="empty-book-emoji">📚</span>
+                  <h4>This collection is empty</h4>
+                  <p>Browse books and add them to this list to customize your collection.</p>
+                </div>
               )}
             </div>
           )}
-        </>
+        </div>
       )}
 
       <ConfirmationModal
